@@ -1,0 +1,36 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,121,35)
+  { TBMinutos TextBox
+    MoveScaled(6,9,14,5)
+  }
+  { TBPeso TextBox
+    MoveScaled(20,9,14,5)
+  }
+  { CBEjercicio ComboBox
+    MoveScaled(34,9,18,5)
+    ReadOnly = True
+  }
+  { BCalcular Button
+    MoveScaled(6,16,17,5)
+    Text = ("Calcular")
+  }
+  { LResultado Label
+    MoveScaled(6,24,110,6)
+    Background = &HFFF7DF&
+    Text = ("0")
+  }
+  { Label2 Label
+    MoveScaled(6,6,13,3)
+    Text = ("Minutos")
+  }
+  { Label3 Label
+    MoveScaled(20,6,13,3)
+    Text = ("Peso (KG)")
+  }
+  { Label4 Label
+    MoveScaled(34,6,13,3)
+    Text = ("Ejercicio")
+  }
+}

@@ -1,0 +1,202 @@
+' Gambas class file
+
+
+'Estado
+'Colección con los tipos de ejercicios disponibles
+Private TEColeccion As TiposEjercicios
+
+
+Private Const FILE_DATOS As String = "tiposejercicios.txt"
+
+
+'Comportamiento
+'Constructor
+Public Sub _new()
+  
+  TEColeccion = New TiposEjercicios
+  
+  
+End
+
+
+'comportamiento para devolver las KCAL de una determinada actividad
+'realizada
+Public Function calcularKCal(minutos As Integer, kilos As Float, descrEjer As String) As String
+  
+  Dim resultado As String
+  Dim miEjercicio As Ejercicio
+  
+  
+  'dado los kg, minutos y el ejercicio seleccionado, creamos los objetos necesarios
+  miEjercicio = TEColeccion.getEjercicioByDescr(descrEjer)
+  
+  'y después a esos objetos les pedimos trabajar
+  resultado = miEjercicio.calcularKCal(minutos, kilos)
+  
+  
+  'el resultado del trabajo lo ponemos en la pantalla, concretamente en el LBResultado
+  Return resultado
+End
+
+
+
+'Tenemos que inicializar el ComboBox con todos los tipos de ejercicios
+'disponibles
+Public Sub iniComboBox(CBEjer As ComboBox)
+
+  Dim i As Integer
+
+  Dim miCadena As String
+  Dim miEjercicio As Ejercicio
+  
+  cargarDatos()
+  
+  For i = 0 To TEColeccion.getSize() - 1
+    miEjercicio = TEColeccion.getEjercicioByIndex(i)    
+    miCadena = miEjercicio.getDescripcion()  
+    CBEjer.Add(miCadena)
+  Next 
+  
+  CBEjer.Index = 0
+  
+End
+
+
+'Cargamos los datos en coleccion TEColeccion
+Private Sub cargarDatos()
+  
+  Dim hfile As File
+  Dim sLine As String
+  Dim miEjercicio As Ejercicio
+  Dim errores As String
+  Dim contador As String
+  
+  If (Exist(FILE_DATOS)) Then
+    'abro el fchero para la lectura
+    hfile = Open FILE_DATOS For Input
+    
+    While Not Eof(hfile)
+      Line Input #hfile, sline
+    
+      'tenemos que cmprobar que sline es correcta
+      errores = comprobarErrores(sLine)
+      If (errores <> "") Then
+        'Tenemos que decir que hemos encontrado errores en la linea que estamos analizando
+        
+        Else
+        'tenemos un string como objeto  ejercicio. lo deserializamos
+        miEjercicio = New Ejercicio(sLine)
+        TEColeccion.addEjercicio(miEjercicio)
+        
+       Endif
+      
+    Wend
+    
+    hfile.Close()
+  
+    Else
+    'Pongo que no tenemos fichero utilizable
+    Message.Error("No encontramos su fichero" & FILE_DATOS & "Arregleselas usted")
+    FMain.Close()
+    
+    Endif
+  
+End
+
+
+
+'comprobar errrores de serrializacion
+Private Function comprobarErrores(entradaDatos As String) As String
+  
+ Dim resultado As String
+ Dim primerseparador As Integer
+ 
+ resultado = ""
+ primerseparador = InStr(entradaDatos, ";")
+ 
+  
+      'Calculo errores
+  If (entradaDatos.Len = 0)
+      resultado = "Linea vacía"
+      
+    Else 
+      primerseparador = InStr(entradaDatos, ";")
+      
+   If (primerseparador) > 1) Then
+    If (InStr(entradaDatos, ";", primerseparador + 1) > 0)
+      resultado = "Hay mas de dos columnas"
+    
+    Else
+      resultado = ""
+ 
+  Endif
+  
+ Return resultado
+  
+End
+
+
+Private Function compruebaFloat(unFloat As String) As Boolean
+  
+  Dim resultado As Boolean
+  Dim primeraLetra As String
+  Dim restoPorMirar As String
+  Dim contador As Integer
+  Dim estadoMaquina As Byte     '0 significa rpimera parte del float 1 , punto , 2 numero
+  ''''''''''''''''''''''''''''''4 signica sim empezar todavia
+  
+  restoPorMirar = unFloat
+  contador = 0
+  estadoMaquina = 4
+  resultado = True
+  
+  'mientras resultado siga true y no llegemos al final
+While (resultado And contador < unFloat.Len)   
+  'mira el caracter para ver si es correcto
+  primeraLetra = Left$(restoPorMirar, 1)
+  If (Not compruebaLetra(primeraLetra, estadoMaquina)) Then 
+    resultado = False
+  Endif
+  restoPorMirar = Right$(restoPorMirar, restoPorMirar.Len - 1) 
+  'en otro caso resultado es false (ergo,dejamos de buscar)
+  
+  Return resultado
+  
+End
+
+
+
+Private Function compruebaLetra(primeraLetra As String, estadoMaquina As Byte)
+
+Dim resultado As Boolean
+Dim letraCodigo As Byte
+
+resultado = True
+
+letraCodigo = Asc(primeraLetra, 1)
+
+If (letraCodigo < 48 Or letraCodigo > 57 And letraCodigo <> 46)
+    ' la fastidiaste vakero
+    resultado = False
+    
+Else 
+    Select Case estadoMaquina
+      Case 0 
+        Case 1
+          Case 2
+            Case 4 
+              If (letraCodigo > 48 Or letraCodigo < 57) Then
+                
+                Else
+                  
+                  
+              Endif
+      
+    End Select
+      
+Return resultado
+
+
+
+
+

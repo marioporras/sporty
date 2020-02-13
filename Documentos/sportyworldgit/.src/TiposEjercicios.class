@@ -1,0 +1,102 @@
+' Gambas class file
+
+'Estado
+
+'Lista de ejercicios disponibles
+Private listaEjercicios As New Ejercicio[]
+
+'Descripciones constantes (mientras las pillamos de otro sitio)
+'Private Const DESCR1 As String = "Caminata"
+'Private Const DESCR2 As String = "Correr"
+'Private Const DESCR3 As String = "Bicicleta"
+
+'MET constantes
+'Private Const MET1 As Float = 4.3
+'Private Const MET2 As Float = 7.0
+'Private Const MET3 As Float = 7.5
+
+
+'Comportamientos
+'Constructor
+
+Public Sub _new()
+  
+  'Dim ejer As Ejercicio
+  
+  'ejer = New Ejercicio(DESCR1, MET1)
+  'listaEjercicios.Add(ejer)
+  
+  'ejer = New Ejercicio(DESCR2, MET2)
+  'listaEjercicios.Add(ejer)
+  
+  'ejer = New Ejercicio(DESCR3, MET3)
+  'listaEjercicios.Add(ejer)
+  
+End
+
+'comportamiento para añadir un ejercicio a la lista
+Public Sub addEjercicio(miEjercicio As Ejercicio)
+  
+  listaEjercicios.Add(miEjercicio)
+  
+End
+
+
+
+'Devolvemos los ejercicios que nos pidan
+Public Function getEjercicioByIndex(indice As Integer) As Ejercicio
+   Dim miEjercicio As Ejercicio
+   
+   'miramos en la lista el ejercicio que necesitamos
+   miEjercicio = listaEjercicios[indice]
+   
+   Return miEjercicio
+  
+End
+
+
+'Devolvemos el ejercicio que se llame igual que la descripción que nos dan
+Public Function getEjercicioByDescr(descr As String) As Ejercicio
+   Dim miEjercicio As Ejercicio
+   Dim encontrado As Boolean
+   Dim n As Integer
+   
+   encontrado = False
+   n = 0
+       
+   
+   'busco en la lista el que se llame igual. Empiezo por el primero y termino por el final
+   While (Not encontrado And n < listaEjercicios.Count)   'es un if encubierto
+       'busco
+       If (listaEjercicios[n].getDescripcion() = descr) Then
+         encontrado = True
+         miEjercicio = listaEjercicios[n]
+       Else
+         n = n + 1          
+       Endif
+   Wend
+   
+   Return miEjercicio
+     
+   
+End
+
+
+'recuento de los ejercicios 
+Public Function getSize() As Integer
+  
+  
+  Return listaEjercicios.Count
+  
+  
+  
+  End
+  
+  
+  
+  
+
+
+
+
+'

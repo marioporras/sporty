@@ -1,0 +1,40 @@
+' Gambas class file
+
+'Estado
+Private descripcion As String
+Private met As Float
+
+'Comportamiento
+'Constructor
+Public Sub _new(serializado As String)
+  
+  
+                 'Left$(mensaje,buscar en mensaje ";") ---> como buscar una cadena con un separador
+  descripcion = Left$(serializado, InStr(serializado, ";") - 1)
+  met = CFloat(Right$(serializado, Len(serializado) - InStr(serializado, ";")))
+  
+End
+
+
+'Resto de comportamientos
+'Devolver la descripcion
+Public Function getDescripcion() As String
+  
+  Return descripcion
+  
+End
+
+
+
+'Calcular las Kcal
+Public Function calcularKCal(minutos As Integer, kilos As Float) As String
+  
+  Dim resultado As String
+  
+  resultado = CStr(met * kilos * minutos / 60.0)
+  
+  Return resultado
+  
+End
+
+

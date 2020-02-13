@@ -1,0 +1,47 @@
+' Gambas class file
+
+'''''''''''''''''''''''''''El fmain es el que escucha lo que pasa en la pantalla''''''''''''''''''''''''''''''
+
+'Estado de la clase GUI principal
+'Necesitamos un controlador
+Private miControlador As Controlador
+
+
+
+'Comportamiento del GUI
+
+'Boton para realizar el cálculo
+Public Sub BCalcular_Click()
+  Dim minutos As Integer
+  Dim kilos As Float
+  Dim descrEjercicio As String
+  
+  minutos = CInt(TBMinutos.Text)
+  kilos = CFloat(TBPeso.Text)
+  descrEjercicio = CBEjercicio.List[CBEjercicio.Index]
+
+  'Tengo que pedirle a mi controlador, que realice el cálculo
+  LResultado.Text = "Las Kcal quemadas en el ejercicio " & descrEjercicio
+  LResultado.Text = LResultado.Text & " durante " & TBMinutos.Text & " minutos son " 
+  LResultado.Text = LResultado.Text & miControlador.calcularKCal(minutos, kilos, descrEjercicio) & " Kcal"
+
+End
+
+
+
+'Inicialización del formulario
+Public Sub Form_Open()
+
+  'Aquí tengo que preparar todos los objetos del GUI y al controlador.
+  'Primero creo el controlador
+  miControlador = New Controlador
+  
+  
+  'Después inicializo el Combobox
+  miControlador.iniComboBox(CBEjercicio)
+
+End
+
+
+
+
